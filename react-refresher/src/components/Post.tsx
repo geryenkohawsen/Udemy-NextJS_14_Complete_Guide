@@ -1,3 +1,5 @@
+import styles from './Post.module.css';
+
 interface PostProps {
   author: string; // The author of the post
   body: string; // The body content of the post
@@ -5,9 +7,9 @@ interface PostProps {
 
 function Post({ author, body }: PostProps) {
   return (
-    <div>
-      <p>{author}</p>
-      <p>{body}</p>
+    <div className={styles.post}>
+      <p className={styles.author}>{author}</p>
+      <p className={styles.text}>{body}</p>
     </div>
   );
 }
