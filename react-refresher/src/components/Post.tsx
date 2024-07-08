@@ -1,13 +1,13 @@
-const names = ['Geryenko', 'Hawsen'];
+interface PostProps {
+  author: string; // The author of the post
+  body: string; // The body content of the post
+}
 
-function Post() {
-  // chosenName is recalculated every time the Post component renders
-  const chosenName = Math.random() > 0.5 ? names[0] : names[1];
-
+function Post({ author, body }: PostProps) {
   return (
     <div>
-      <p>{chosenName}</p>
-      <p>React Refresher</p>
+      <p>{author}</p>
+      <p>{body}</p>
     </div>
   );
 }
