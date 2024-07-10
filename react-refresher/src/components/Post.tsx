@@ -5,11 +5,11 @@ interface PostProps {
   body: string; // The body content of the post
 }
 
-function Post({ author, body }: PostProps) {
+function Post(props: PostProps) {
   return (
     <li className={classes.post}>
-      <p className={classes.author}>{author}</p>
-      <p className={classes.text}>{body}</p>
+      <p className={classes.author}>{props.author}</p>
+      <p className={classes.text}>{props.body}</p>
     </li>
   );
 }
