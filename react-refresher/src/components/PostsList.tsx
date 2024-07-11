@@ -35,6 +35,7 @@ function PostsList(props: PostsListProps) {
       <NewPost
         onBodyChange={bodyChangeHandler}
         onAuthorChange={authorChangeHandler}
+        onCancel={props.onStopPosting}
       />
     </Modal>
   );

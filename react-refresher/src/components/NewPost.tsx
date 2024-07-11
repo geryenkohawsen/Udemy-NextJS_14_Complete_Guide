@@ -3,6 +3,7 @@ import classes from './NewPost.module.css';
 interface NewPostProps {
   onBodyChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onAuthorChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCancel: () => void;
 }
 
 function NewPost(props: NewPostProps) {
@@ -15,6 +16,12 @@ function NewPost(props: NewPostProps) {
       <p>
         <label htmlFor='name'>Your name</label>
         <input type='text' id='name' required onChange={props.onAuthorChange} />
+      </p>
+      <p className={classes.actions}>
+        <button type='button' onClick={props.onCancel}>
+          Cancel
+        </button>
+        <button type='submit'>Submit</button>
       </p>
     </form>
   );
