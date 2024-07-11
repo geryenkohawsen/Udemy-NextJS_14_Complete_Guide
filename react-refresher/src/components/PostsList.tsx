@@ -4,27 +4,25 @@ import Post from './Post';
 import classes from './PostsList.module.css';
 import Modal from './Modal';
 
-function PostsList() {
+interface PostsListProps {
+  isPosting: boolean;
+  onStopPosting: () => void;
+}
+
+function PostsList(props: PostsListProps) {
   // --------------------------------------
   // State Declarations
   // --------------------------------------
-  const [isModalVisible, setIsModalVisible] = useState(true);
   const [enteredBody, setEnteredBody] = useState('');
   const [enteredAuthor, setEnteredAuthor] = useState('');
 
   // --------------------------------------
   // Functions
   // --------------------------------------
-  function hideModalHandler() {
-    setIsModalVisible(false);
-  }
-
-  // Handler for body change in NewPost component
   function bodyChangeHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setEnteredBody(event.target.value);
   }
 
-  // Handler for author change in NewPost component
   function authorChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setEnteredAuthor(event.target.value);
   }
@@ -32,8 +30,8 @@ function PostsList() {
   // --------------------------------------
   // Dynamic Contents
   // --------------------------------------
-  const modalContent = isModalVisible && (
-    <Modal onClose={hideModalHandler}>
+  const modalContent = props.isPosting && (
+    <Modal onClose={props.onStopPosting}>
       <NewPost
         onBodyChange={bodyChangeHandler}
         onAuthorChange={authorChangeHandler}
