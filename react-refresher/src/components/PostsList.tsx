@@ -1,7 +1,7 @@
 import NewPost from './NewPost';
 import classes from './PostsList.module.css';
 import Modal from './Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { PostType } from '../@types';
 import Post from './Post';
 
@@ -12,6 +12,17 @@ interface PostsListProps {
 
 function PostsList(props: PostsListProps) {
   const [posts, setPosts] = useState<PostType[]>([]);
+
+  //* useEffect will only run the function based on the dependencies variables (2nd argument)
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch('http://localhost:8080/posts');
+      const resData = await response.json();
+      setPosts(resData.posts);
+    }
+
+    fetchPosts();
+  }, []);
 
   function addPostHandler(postData: PostType) {
     fetch('http://localhost:8080/posts', {
