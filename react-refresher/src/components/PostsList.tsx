@@ -2,7 +2,8 @@ import NewPost from './NewPost';
 import classes from './PostsList.module.css';
 import Modal from './Modal';
 import { useState } from 'react';
-import { Post } from '../@types';
+import type { PostType } from '../@types';
+import Post from './Post';
 
 interface PostsListProps {
   isPosting: boolean;
@@ -10,30 +11,45 @@ interface PostsListProps {
 }
 
 function PostsList(props: PostsListProps) {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
 
-  function addPostHandler(postData: Post) {
-    //! When updating a state based on a current state, we need to pass a function to the setter
-    //! This ensure React use the latest state for the state update
+  function addPostHandler(postData: PostType) {
+    //* When updating a state based on a current state, we need to pass a function to the setter
+    //* This ensure React use the latest state for the state update
     setPosts((existingPosts) => [postData, ...existingPosts]);
   }
 
-  // --------------------------------------
-  // Dynamic Contents
-  // --------------------------------------
-  const modalContent = props.isPosting && (
-    <Modal onClose={props.onStopPosting}>
-      <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
-    </Modal>
-  );
+  // // --------------------------------------
+  // // Dynamic Contents
+  // // --------------------------------------
+  // const modalContent = props.isPosting && (
+  //   <Modal onClose={props.onStopPosting}>
+  //     <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
+  //   </Modal>
+  // );
 
   // --------------------------------------
   // Render
   // --------------------------------------
   return (
     <>
-      {modalContent}
-      <ul className={classes.posts}></ul>
+      {props.isPosting && (
+        <Modal onClose={props.onStopPosting}>
+          <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
+        </Modal>
+      )}
+      {posts.length > 0 ? (
+        <ul className={classes.posts}>
+          {posts.map((post, idx) => (
+            <Post key={idx} author={post.author} body={post.body} />
+          ))}
+        </ul>
+      ) : (
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <h2>There are no posts yet.</h2>
+          <p>Start adding some!!</p>
+        </div>
+      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-export type Post = {
+export type PostType = {
   body: string;
   author: string;
-}
+};

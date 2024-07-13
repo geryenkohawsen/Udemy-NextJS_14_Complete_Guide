@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import classes from './NewPost.module.css';
-import { Post } from '../@types';
+import { PostType } from '../@types';
 
 interface NewPostProps {
   onCancel: () => void;
-  onAddPost: (postData: Post) => void;
+  onAddPost: (postData: PostType) => void;
 }
 
 function NewPost(props: NewPostProps) {
