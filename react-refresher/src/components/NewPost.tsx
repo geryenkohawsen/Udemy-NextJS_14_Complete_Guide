@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import classes from './NewPost.module.css';
+import { Post } from '../@types';
 
 interface NewPostProps {
   onCancel: () => void;
+  onAddPost: (postData: Post) => void;
 }
 
 function NewPost(props: NewPostProps) {
@@ -25,11 +27,12 @@ function NewPost(props: NewPostProps) {
 
   function submitHandler(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-    const postDate = {
+    const postData = {
       body: enteredBody,
       author: enteredAuthor,
     };
-    console.log(postDate);
+    console.log(postData);
+    props.onAddPost(postData);
     props.onCancel();
   }
 
