@@ -92,12 +92,8 @@ function PostsList(props: PostsListProps) {
       )}
       {!isFetching && !error && posts.length > 0 && (
         <ul className={classes.posts}>
-          {posts.map((post) => (
-            <Post
-              key={post.body + new Date().toISOString()}
-              author={post.author}
-              body={post.body}
-            />
+          {posts.map((post, idx) => (
+            <Post key={post.body + idx} author={post.author} body={post.body} />
           ))}
         </ul>
       )}
