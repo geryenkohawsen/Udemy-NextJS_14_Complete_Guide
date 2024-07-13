@@ -14,6 +14,12 @@ function PostsList(props: PostsListProps) {
   const [posts, setPosts] = useState<PostType[]>([]);
 
   function addPostHandler(postData: PostType) {
+    fetch('http://localhost:8080/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    });
+
     //* When updating a state based on a current state, we need to pass a function to the setter
     //* This ensure React use the latest state for the state update
     setPosts((existingPosts) => [postData, ...existingPosts]);
