@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import classes from './NewPost.module.css';
 import { PostType } from '../@types';
 import Modal from '../components/Modal';
 
 interface NewPostProps {
-  onCancel: () => void;
   onAddPost: (postData: PostType) => void;
 }
 
@@ -34,7 +34,6 @@ function NewPost(props: NewPostProps) {
     };
     console.log(postData);
     props.onAddPost(postData);
-    props.onCancel();
   }
 
   return (
@@ -54,9 +53,9 @@ function NewPost(props: NewPostProps) {
           />
         </p>
         <p className={classes.actions}>
-          <button type='button' onClick={props.onCancel}>
+          <Link to='/' type='button'>
             Cancel
-          </button>
+          </Link>
           <button type='submit'>Submit</button>
         </p>
       </form>

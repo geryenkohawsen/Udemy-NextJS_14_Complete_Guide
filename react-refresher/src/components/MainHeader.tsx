@@ -1,13 +1,9 @@
+import { Link } from 'react-router-dom';
 import { MdPostAdd, MdMessage } from 'react-icons/md';
 import classes from './MainHeader.module.css';
 
-// Define the props interface
-interface MainHeaderProps {
-  onCreatePost: () => void; // Define the type for the onCreatePost prop
-}
-
 // Functional component with typed props
-const MainHeader = (props: MainHeaderProps) => {
+const MainHeader = () => {
   return (
     <header className={classes.header}>
       <h1 className={classes.logo}>
@@ -15,10 +11,10 @@ const MainHeader = (props: MainHeaderProps) => {
         React Poster
       </h1>
       <p>
-        <button className={classes.button} onClick={props.onCreatePost}>
+        <Link to='/create-post' className={classes.button}>
           <MdPostAdd size={18} />
           New Post
-        </button>
+        </Link>
       </p>
     </header>
   );
