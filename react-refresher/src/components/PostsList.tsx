@@ -6,25 +6,6 @@ import Post from './Post';
 function PostsList() {
   const posts = useLoaderData() as PostType[];
 
-  const addPostHandler = async (postData: PostType) => {
-    try {
-      await fetch('http://localhost:8080/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(postData),
-      });
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error('Adding post failed', err.message);
-      } else {
-        console.error('Adding post failed', 'An unknown error occurred');
-      }
-    }
-  };
-
-  // --------------------------------------
-  // Render
-  // --------------------------------------
   return (
     <>
       {posts.length > 0 && (

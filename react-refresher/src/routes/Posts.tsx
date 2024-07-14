@@ -14,7 +14,7 @@ function Posts() {
 
 export default Posts;
 
-export async function loader() {
+export const loader = async () => {
   try {
     const response = await fetch('http://localhost:8080/posts');
     if (!response.ok) {
@@ -25,9 +25,12 @@ export async function loader() {
     return resData.posts;
   } catch (err) {
     if (err instanceof Error) {
-      console.error('Adding post failed', err.message);
+      console.error('ERROR', err.message);
     } else {
-      console.error('Adding post failed', 'An unknown error occurred');
+      console.error(
+        'ERROR',
+        'An unknown error occurred during fetching posts data'
+      );
     }
   }
-}
+};

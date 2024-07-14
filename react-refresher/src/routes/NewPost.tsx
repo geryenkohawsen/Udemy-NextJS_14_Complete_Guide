@@ -1,56 +1,20 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import classes from './NewPost.module.css';
-import { PostType } from '../@types';
+import type { ActionFunction } from 'react-router';
+import { Form, Link, redirect } from 'react-router-dom';
+
 import Modal from '../components/Modal';
+import classes from './NewPost.module.css';
 
-interface NewPostProps {
-  onAddPost: (postData: PostType) => void;
-}
-
-function NewPost(props: NewPostProps) {
-  // --------------------------------------
-  // State Declarations
-  // --------------------------------------
-  const [enteredBody, setEnteredBody] = useState('');
-  const [enteredAuthor, setEnteredAuthor] = useState('');
-
-  // --------------------------------------
-  // Functions
-  // --------------------------------------
-  function bodyChangeHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setEnteredBody(event.target.value);
-  }
-
-  function authorChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    setEnteredAuthor(event.target.value);
-  }
-
-  function submitHandler(event: React.ChangeEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const postData = {
-      body: enteredBody,
-      author: enteredAuthor,
-    };
-    console.log(postData);
-    props.onAddPost(postData);
-  }
-
+function NewPost() {
   return (
     <Modal>
-      <form className={classes.form} onSubmit={submitHandler}>
+      <Form method='post' className={classes.form}>
         <p>
           <label htmlFor='body'>Text</label>
-          <textarea id='body' required rows={3} onChange={bodyChangeHandler} />
+          <textarea id='body' name='body' required rows={3} />
         </p>
         <p>
           <label htmlFor='name'>Your name</label>
-          <input
-            type='text'
-            id='name'
-            required
-            onChange={authorChangeHandler}
-          />
+          <input type='text' id='name' name='author' required />
         </p>
         <p className={classes.actions}>
           <Link to='/' type='button'>
@@ -58,9 +22,36 @@ function NewPost(props: NewPostProps) {
           </Link>
           <button type='submit'>Submit</button>
         </p>
-      </form>
+      </Form>
     </Modal>
   );
 }
 
 export default NewPost;
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const postData = Object.fromEntries(formData);
+
+  try {
+    const response = await fetch('http://localhost:8080/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    });
+    if (!response.ok) {
+      throw new Error('Posting posts failed');
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error('ERROR', err.message);
+    } else {
+      console.error(
+        'ERROR',
+        'An unknown error occurred during posting new post data'
+      );
+    }
+  }
+
+  return redirect('/');
+};

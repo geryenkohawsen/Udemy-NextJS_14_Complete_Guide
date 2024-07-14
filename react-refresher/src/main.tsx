@@ -2,7 +2,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import Posts, { loader as postsLoader } from './routes/Posts';
-import NewPost from './routes/NewPost';
+import NewPost, { action as newPostAction } from './routes/NewPost';
 import RootLayout from './routes/RootLayout';
 
 import './index.css';
@@ -15,11 +15,12 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Posts />,
-        loader: postsLoader,
+        loader: postsLoader, //* will be triggered before the element is rendered
         children: [
           {
             path: '/create-post',
             element: <NewPost />,
+            action: newPostAction, //* will be triggered when a form is submitted inside the element
           },
         ],
       },
