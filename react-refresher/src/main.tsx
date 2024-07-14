@@ -6,6 +6,7 @@ import NewPost, { action as newPostAction } from './routes/NewPost';
 import RootLayout from './routes/RootLayout';
 
 import './index.css';
+import PostDetails, { loader as postDetailsLoader } from './routes/PostDetails';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
             path: '/create-post',
             element: <NewPost />,
             action: newPostAction, //* will be triggered when a form is submitted inside the element
+          },
+          {
+            path: '/:id',
+            element: <PostDetails />,
+            loader: postDetailsLoader,
           },
         ],
       },

@@ -1,10 +1,18 @@
 .post {
   margin: 1rem 0;
-  padding: 1rem;
+  height: 150px;
   background-color: #9c7eee;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   animation: animate-in 1s ease-out forwards;
+}
+
+.post a {
+  display: block;
+  margin: 1rem;
+  width: calc(100% - (1rem * 2));
+  height: calc(100% - (1rem * 2));
+  text-decoration: none;
 }
 
 .author {

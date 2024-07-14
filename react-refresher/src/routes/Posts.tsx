@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { LoaderFunction, Outlet } from 'react-router-dom';
 import PostsList from '../components/PostsList';
 
 function Posts() {
@@ -14,7 +14,7 @@ function Posts() {
 
 export default Posts;
 
-export const loader = async () => {
+export const loader: LoaderFunction = async () => {
   try {
     const response = await fetch('http://localhost:8080/posts');
     if (!response.ok) {
