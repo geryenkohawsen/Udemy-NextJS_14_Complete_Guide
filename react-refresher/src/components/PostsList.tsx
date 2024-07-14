@@ -1,16 +1,9 @@
-import NewPost from './NewPost';
 import classes from './PostsList.module.css';
-import Modal from './Modal';
 import { useCallback, useEffect, useState } from 'react';
 import type { PostType } from '../@types';
 import Post from './Post';
 
-interface PostsListProps {
-  isPosting: boolean;
-  onStopPosting: () => void;
-}
-
-function PostsList(props: PostsListProps) {
+function PostsList() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -75,11 +68,6 @@ function PostsList(props: PostsListProps) {
   // --------------------------------------
   return (
     <>
-      {props.isPosting && (
-        <Modal onClose={props.onStopPosting}>
-          <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
-        </Modal>
-      )}
       {isFetching && (
         <div style={{ textAlign: 'center', color: 'white' }}>
           <p>Loading posts...</p>
