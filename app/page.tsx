@@ -1,16 +1,7 @@
-import Link from 'next/link';
-import Header from '@/components/header';
-
 export default function Home() {
-  console.log('TEST');
-
   return (
     <main>
-      <Header />
-      <p>🔥 Let&apos;s get started! 🔥</p>
-      <p>
-        <Link href='/about'>About Us</Link>
-      </p>
+      <h1 className='text-center text-white'>Time to get started!</h1>
     </main>
   );
 }
