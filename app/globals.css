@@ -27,6 +27,14 @@ body {
   background: radial-gradient(#282c34, #282c34);
 }
 
+h1 {
+  @apply text-6xl font-bold;
+}
+
+h2 {
+  @apply text-3xl font-bold;
+}
+
 .not-found,
 .error {
   margin-top: 5rem;
