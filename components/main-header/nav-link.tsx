@@ -12,7 +12,6 @@ interface Props {
 export default function NavLink({ href, children }: Props) {
   const path = usePathname();
 
-  console.log("path --> ", path);
   return (
     <Link
       href={href}
