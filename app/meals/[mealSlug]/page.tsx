@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getMeal } from "@/lib/meals";
 
 import styles from "./page.module.css";
+import { notFound } from "next/navigation";
 
 interface Recipe {
   title: string;
@@ -19,6 +20,10 @@ export default function MealDetailsPage({
   params: { mealSlug: string };
 }) {
   const meal = getMeal(params.mealSlug) as Recipe;
+
+  if (!meal) {
+    notFound();
+  }
 
   // Replace line break with  line break element
   meal.instructions = meal.instructions.replace(/\n/g, "<br />");
