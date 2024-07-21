@@ -8,13 +8,12 @@ import styles from "./page.module.css";
 
 async function Meals() {
   const meals = await getMeals();
+  console.log("meals --> ", meals);
 
   return <MealsGrid meals={meals} />;
 }
 
 export default async function MealsPage() {
-  const meals = await getMeals();
-
   return (
     <>
       <header className={styles.header}>
@@ -33,7 +32,7 @@ export default async function MealsPage() {
         <Suspense
           fallback={<p className={styles.loading}>Fetching meals...</p>}
         >
-          <Meals />
+          {Meals()}
         </Suspense>
       </main>
     </>
