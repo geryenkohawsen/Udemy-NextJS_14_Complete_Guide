@@ -18,12 +18,12 @@ export default function ImagePicker({ label, name }: Props) {
   }
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
       setPickedImage(null);
       return;
     }
-
-    const file = event.target.files[0];
 
     const fileReader = new FileReader();
     fileReader.onload = () => {
@@ -60,6 +60,7 @@ export default function ImagePicker({ label, name }: Props) {
           name={name}
           ref={imageInputRef}
           onChange={handleImageChange}
+          required
         />
         <button
           className={styles.button}
