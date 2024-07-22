@@ -7,7 +7,14 @@ function isInvalidText(text: string | undefined) {
   return !text || text.trim() === "";
 }
 
-export async function shareMeal(formData: FormData) {
+export interface FormState {
+  message: string | null;
+}
+
+export async function shareMeal(
+  prevState: FormState,
+  formData: FormData,
+): Promise<{ message: string }> {
   const meal = {
     title: formData.get("title"),
     summary: formData.get("summary"),
@@ -26,7 +33,9 @@ export async function shareMeal(formData: FormData) {
     !meal.creator_email?.toString().includes("@") ||
     !meal.image
   ) {
-    throw new Error("Invalid input");
+    return {
+      message: "Invalid input.",
+    };
   }
 
   await saveMeal(meal);
