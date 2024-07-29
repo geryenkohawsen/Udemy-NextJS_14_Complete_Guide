@@ -1,7 +1,9 @@
-export default function NewsDetailPage() {
+export default function NewsDetailPage({ params }: { params: { id: string } }) {
+  console.log('params --> ', params)
+
   return (
-    <div id="home">
-      <h1>NewsDetailPage</h1>
+    <div>
+      <h1>News Detail Page</h1>
     </div>
-  );
+  )
 }
