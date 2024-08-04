@@ -16,16 +16,23 @@ export default function FilteredNewsPage({ params }: Props) {
   let links = getAvailableNewsYears()
 
   if (selectedYear && !selectedMonth) {
-    news = getNewsForYear(selectedYear)
-    links = getAvailableNewsMonths(selectedYear) // make links to months if year is selected already
+    news = getNewsForYear(+selectedYear)
+    links = getAvailableNewsMonths(+selectedYear) // make links to months if year is selected already
   } else if (selectedYear && selectedMonth) {
-    news = getNewsForYearAndMonth(selectedYear, selectedMonth)
+    news = getNewsForYearAndMonth(+selectedYear, +selectedMonth)
     links = [] // remove links if month is selected
   }
 
   let newsContent = <p>No news found for the selected period.</p>
   if (news && news?.length > 0) {
     newsContent = <NewsList news={news} />
+  }
+
+  if (
+    (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
+    (selectedYear && selectedMonth && !getAvailableNewsMonths(+selectedYear).includes(+selectedMonth))
+  ) {
+    throw new Error('Invalid filter.')
   }
 
   return (
