@@ -1,5 +1,5 @@
+import '@/app/globals.css'
 import MainHeader from '@/components/MainHeader'
-import './globals.css'
 
 export const metadata = {
   title: 'Next.js Page Routing & Rendering',
