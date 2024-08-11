@@ -5,8 +5,10 @@ import { DUMMY_NEWS } from '@/dummy-news'
 
 const db = sql('data.db')
 
-export function getAllNews(): News {
+export async function getAllNews(): Promise<News> {
   const news = db.prepare('SELECT * FROM news').all()
+  // Simulate a backend process
+  await new Promise((resolve) => setTimeout(resolve, 2000))
   return news as News
 }
 
