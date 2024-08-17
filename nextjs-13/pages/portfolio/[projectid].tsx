@@ -1,8 +1,11 @@
-interface Props {
-  params: { projectid: string }
-}
+import { useRouter } from 'next/router'
 
-export default function PortfolioProjectPage({ params }: Props) {
+export default function PortfolioProjectPage() {
+  const router = useRouter()
+
+  console.log('router.pathname', router.pathname)
+  console.log('router.query', router.query)
+
   return (
     <div>
       <h1>The Portfolio Project Page</h1>
