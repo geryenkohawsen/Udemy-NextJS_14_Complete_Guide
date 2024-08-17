@@ -2,15 +2,15 @@
   "folders": [
     {
       "path": "./nextjs-14",
-      "name": "NextJS 14"
+      "name": "NextJS-14"
     },
     {
       "path": "./nextjs-13",
-      "name": "NextJS 13"
+      "name": "NextJS-13"
     },
     {
       "path": "./basics",
-      "name": "Basic"
+      "name": "Basics"
     }
   ]
 }
