@@ -1,4 +1,4 @@
-import EventItem from '@/components/event-item'
+import EventItem from '@/components/events/event-item'
 import type { Event } from '@/dummy-data'
 import classes from './event-list.module.css'
 
