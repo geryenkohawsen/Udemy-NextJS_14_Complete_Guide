@@ -4,12 +4,21 @@ import classes from './button.module.css'
 
 interface Props {
   children: ReactNode
-  link: string
+  link?: string
+  onClick?: () => void
 }
-export default function Button({ children, link }: Props) {
+export default function Button({ children, link, onClick }: Props) {
+  if (link) {
+    return (
+      <Link href={link} className={classes.btn}>
+        {children}
+      </Link>
+    )
+  }
+
   return (
-    <Link href={link} className={classes.btn}>
+    <button className={classes.btn} onClick={onClick}>
       {children}
-    </Link>
+    </button>
   )
 }
