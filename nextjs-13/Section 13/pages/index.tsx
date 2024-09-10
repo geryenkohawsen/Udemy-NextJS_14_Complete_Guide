@@ -23,8 +23,7 @@ export default function HomePage(props: Props) {
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json')
   const jsonData = await fs.readFile(filePath)
-  console.log(jsonData)
-  const data = JSON.parse(jsonData)
+  const data = JSON.parse(jsonData.toString())
 
   return {
     props: {
