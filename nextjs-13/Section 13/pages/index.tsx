@@ -1,30 +1,35 @@
 import fs from 'fs/promises'
+import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
 import path from 'path'
 
-interface Props {
+type DummyData = {
   products: {
     id: string
     title: string
+    description: string
   }[]
 }
 
-export default function HomePage(props: Props) {
-  const { products } = props
-
-  return (
-    <ul>
-      {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
-      ))}
-    </ul>
-  )
-}
-
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<DummyData> = async (context): Promise<GetStaticPropsResult<DummyData>> => {
   console.log('Regenerating... ')
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json')
   const jsonData = await fs.readFile(filePath)
-  const data = JSON.parse(jsonData.toString())
+  const data = JSON.parse(jsonData.toString()) as DummyData
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/no-data',
+        permanent: false,
+      },
+    }
+  }
+
+  if (data.products.length === 0) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
@@ -34,4 +39,14 @@ export async function getStaticProps() {
     // request comes in, at most once every 10 seconds.
     revalidate: 10,
   }
+}
+
+export default function HomePage({ products }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return (
+    <ul>
+      {products.map((product) => (
+        <li key={product.id}>{product.title}</li>
+      ))}
+    </ul>
+  )
 }
