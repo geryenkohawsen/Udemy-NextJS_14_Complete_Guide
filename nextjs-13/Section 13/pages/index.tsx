@@ -21,6 +21,7 @@ export default function HomePage(props: Props) {
 }
 
 export async function getStaticProps() {
+  console.log('Regenerating... ')
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json')
   const jsonData = await fs.readFile(filePath)
   const data = JSON.parse(jsonData.toString())
@@ -29,5 +30,8 @@ export async function getStaticProps() {
     props: {
       products: data.products,
     },
+    // Next.js will invalidate the cache when a
+    // request comes in, at most once every 10 seconds.
+    revalidate: 10,
   }
 }
