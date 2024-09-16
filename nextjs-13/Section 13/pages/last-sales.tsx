@@ -1,5 +1,10 @@
+import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
+
+type StaticProps = {
+  sales: Sales
+}
 
 type Sales = {
   id: string
@@ -7,9 +12,33 @@ type Sales = {
   volume: string
 }[]
 
-export default function LastSalesPage() {
-  const [sales, setSales] = useState<Sales>()
-  const [isLoading, setIsLoading] = useState(false)
+export const getStaticProps = (async (context): Promise<GetStaticPropsResult<StaticProps>> => {
+  const response = await fetch(
+    'https://vue-http-demo-cced6-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json',
+  )
+  const data = await response.json()
+
+  const transformedSales = []
+
+  for (const key in data) {
+    transformedSales.push({
+      id: key,
+      username: data[key].username,
+      volume: data[key].volume,
+    })
+  }
+
+  return {
+    props: {
+      sales: transformedSales,
+    },
+    revalidate: 10,
+  }
+}) satisfies GetStaticProps
+
+export default function LastSalesPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [sales, setSales] = useState<Sales>(props.sales)
+  console.log('sales --> ', sales)
 
   const fetcher = async (url: string, init?: RequestInit): Promise<unknown> => {
     const response = await fetch(url, init)
@@ -61,7 +90,7 @@ export default function LastSalesPage() {
     return <p>No sales data found.</p>
   }
 
-  if (!data || !sales) {
+  if (!data && !sales) {
     return <p>Loading...</p>
   }
 

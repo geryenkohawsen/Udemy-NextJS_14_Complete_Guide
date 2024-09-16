@@ -1,10 +1,10 @@
 import type { DummyData } from '@/types/dummy'
 import fs from 'fs/promises'
-import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import path from 'path'
 
-export const getStaticProps: GetStaticProps<DummyData> = async (context) => {
+export const getStaticProps: GetStaticProps<DummyData> = async (context): Promise<GetStaticPropsResult<DummyData>> => {
   console.log('Regenerating... ')
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json')
   const jsonData = await fs.readFile(filePath)
