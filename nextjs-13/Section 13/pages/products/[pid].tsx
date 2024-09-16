@@ -1,6 +1,6 @@
 import type { DummyData, LoadedProduct } from '@/types/dummy'
 import fs from 'fs/promises'
-import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
 import path from 'path'
 
 const getData = async () => {
@@ -10,7 +10,7 @@ const getData = async () => {
   return data
 }
 
-export const getStaticProps: GetStaticProps<LoadedProduct> = async (context) => {
+export const getStaticProps = (async (context): Promise<GetStaticPropsResult<LoadedProduct>> => {
   const { params } = context
 
   if (!params) {
@@ -36,9 +36,9 @@ export const getStaticProps: GetStaticProps<LoadedProduct> = async (context) => 
       loadedProduct: product,
     },
   }
-}
+}) satisfies GetStaticProps
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = (async () => {
   const data = await getData()
   const ids = data.products.map((product) => product.id)
   const pathsWithParams = ids.map((id) => ({ params: { pid: id } }))
@@ -51,7 +51,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     // Blocking will make it wait and only render the DOM after the request completes
     fallback: true,
   }
-}
+}) satisfies GetStaticPaths
 
 export default function ProductDetailPage({ loadedProduct }: InferGetStaticPropsType<typeof getStaticProps>) {
   // Need a fallback JSX if fallback is set to true

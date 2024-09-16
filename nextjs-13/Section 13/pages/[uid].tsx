@@ -1,10 +1,10 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { GetServerSideProps, GetServerSidePropsResult, InferGetServerSidePropsType } from 'next'
 
 type UserIdPage = {
   id: string
-}   
+}
 
-export const getServerSideProps: GetServerSideProps<UserIdPage> = async (context) => {
+export const getServerSideProps = (async (context): Promise<GetServerSidePropsResult<UserIdPage>> => {
   const { params } = context
   if (!params) {
     return {
@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps<UserIdPage> = async (context
       id: 'userid-' + userId,
     },
   }
-}
+}) satisfies GetServerSideProps
 
 export default function UserIdPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return <h1>{props.id}</h1>

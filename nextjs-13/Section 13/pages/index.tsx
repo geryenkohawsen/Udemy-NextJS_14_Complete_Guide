@@ -4,7 +4,7 @@ import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } fr
 import Link from 'next/link'
 import path from 'path'
 
-export const getStaticProps: GetStaticProps<DummyData> = async (context): Promise<GetStaticPropsResult<DummyData>> => {
+export const getStaticProps = (async (context): Promise<GetStaticPropsResult<DummyData>> => {
   console.log('Regenerating... ')
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json')
   const jsonData = await fs.readFile(filePath)
@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<DummyData> = async (context): Promis
     // request comes in, at most once every 10 seconds.
     revalidate: 10,
   }
-}
+}) satisfies GetStaticProps
 
 export default function HomePage({ products }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
