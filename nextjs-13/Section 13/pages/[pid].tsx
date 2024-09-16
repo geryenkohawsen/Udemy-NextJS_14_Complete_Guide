@@ -1,11 +1,9 @@
 import type { DummyData, LoadedProduct } from '@/types/dummy'
 import fs from 'fs/promises'
-import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import path from 'path'
 
-export const getStaticProps: GetStaticProps<LoadedProduct> = async (
-  context,
-): Promise<GetStaticPropsResult<LoadedProduct>> => {
+export const getStaticProps: GetStaticProps<LoadedProduct> = async (context) => {
   const { params } = context
 
   if (!params) {
@@ -32,6 +30,23 @@ export const getStaticProps: GetStaticProps<LoadedProduct> = async (
     props: {
       loadedProduct: product,
     },
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      {
+        params: { pid: 'p1' },
+      },
+      {
+        params: { pid: 'p2' },
+      },
+      {
+        params: { pid: 'p3' },
+      },
+    ],
+    fallback: false, // true or false or "blocking"
   }
 }
 
