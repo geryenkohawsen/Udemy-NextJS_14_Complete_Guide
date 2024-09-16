@@ -2,6 +2,8 @@ import type { User } from '@/types/dummy'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 export const getServerSideProps: GetServerSideProps<User> = async (context) => {
+  const { params, req, res } = context
+  
   return {
     props: {
       username: 'Max',
