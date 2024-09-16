@@ -13,3 +13,7 @@ export type LoadedProduct = {
     description: string
   }
 }
+
+export type User = {
+  username: string
+}
