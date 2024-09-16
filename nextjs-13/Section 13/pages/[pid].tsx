@@ -49,15 +49,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
     // if fallback is true, it tells Next.js that some other params might be available and is a valid path.
     // However, it will only be generated during the request
     // Blocking will make it wait and only render the DOM after the request completes
-    fallback: 'blocking',
+    fallback: true,
   }
 }
 
 export default function ProductDetailPage({ loadedProduct }: InferGetStaticPropsType<typeof getStaticProps>) {
   // Need a fallback JSX if fallback is set to true
-  // if (!loadedProduct) {
-  //   return <p>Loading...</p>
-  // }
+  if (!loadedProduct) {
+    return <p>Loading...</p>
+  }
 
   return (
     <>
