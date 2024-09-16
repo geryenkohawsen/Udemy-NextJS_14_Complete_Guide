@@ -3,7 +3,9 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 export const getServerSideProps: GetServerSideProps<User> = async (context) => {
   const { params, req, res } = context
-  
+
+  console.log('Server Side Log')
+
   return {
     props: {
       username: 'Max',
