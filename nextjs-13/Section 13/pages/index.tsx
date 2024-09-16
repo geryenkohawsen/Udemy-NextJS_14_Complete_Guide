@@ -1,14 +1,8 @@
+import type { DummyData } from '@/types/dummy'
 import fs from 'fs/promises'
 import type { GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
+import Link from 'next/link'
 import path from 'path'
-
-type DummyData = {
-  products: {
-    id: string
-    title: string
-    description: string
-  }[]
-}
 
 export const getStaticProps: GetStaticProps<DummyData> = async (context): Promise<GetStaticPropsResult<DummyData>> => {
   console.log('Regenerating... ')
@@ -45,7 +39,9 @@ export default function HomePage({ products }: InferGetStaticPropsType<typeof ge
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
+        <li key={product.id}>
+          <Link href={`/${product.id}`}>{product.title}</Link>
+        </li>
       ))}
     </ul>
   )
