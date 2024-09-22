@@ -2,18 +2,52 @@ import EventContent from '@/components/event-detail/event-content'
 import EventLogistics from '@/components/event-detail/event-logistics'
 import EventSummary from '@/components/event-detail/event-summary'
 import ErrorAlert from '@/components/ui/error-alert'
-import { getEventById } from '@/dummy-data'
-import { useRouter } from 'next/router'
+import type { Event } from '@/helpers/api-util'
+import { getAllEvents, getEventById } from '@/helpers/api-util'
+import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, InferGetStaticPropsType } from 'next'
 
-export default function EventDetailPage() {
-  const router = useRouter()
+type StaticProps = {
+  selectedEvent: Event
+}
 
-  const eventId = router.query.eventid
+export const getStaticProps = (async (context): Promise<GetStaticPropsResult<StaticProps>> => {
+  console.log('context --> ', context)
+  const eventId = context.params?.eventId
   if (!eventId) {
-    return <ErrorAlert>Invalid event ID</ErrorAlert>
+    return {
+      notFound: true,
+    }
   }
 
-  const event = getEventById(eventId.toString())
+  const event = await getEventById(eventId.toString())
+  if (!event) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {
+      selectedEvent: event,
+    },
+    // Next.js will invalidate the cache when a
+    // request comes in, at most once every 10 seconds.
+    revalidate: 10,
+  }
+}) satisfies GetStaticProps
+
+export const getStaticPaths = (async () => {
+  const events = await getAllEvents()
+  const paths = events.map((event) => ({ params: { eventId: event.id } }))
+
+  return {
+    paths,
+    fallback: false,
+  }
+}) satisfies GetStaticPaths
+
+export default function EventDetailPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const event = props.selectedEvent
   if (!event) {
     return <ErrorAlert>Event not found</ErrorAlert>
   }
