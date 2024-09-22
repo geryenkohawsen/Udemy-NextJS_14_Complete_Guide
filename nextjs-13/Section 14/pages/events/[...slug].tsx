@@ -2,15 +2,27 @@ import EventList from '@/components/events/event-list'
 import ResultsTitle from '@/components/events/results-title'
 import Button from '@/components/ui/button'
 import ErrorAlert from '@/components/ui/error-alert'
-import { getFilteredEvents } from '@/dummy-data'
-import { useRouter } from 'next/router'
+import { getFilteredEvents, type Event } from '@/helpers/api-util'
+import type { GetServerSideProps, GetServerSidePropsResult, InferGetServerSidePropsType } from 'next'
 
-export default function FilteredEventsPage() {
-  const router = useRouter()
-  const filterData = router.query.slug
+type ServerProps = {
+  hasError?: boolean
+  events?: Event[]
+  date?: {
+    year: number
+    month: number
+  }
+}
 
-  if (!filterData) {
-    return <p className="center">Loading...</p>
+export const getServerSideProps = (async (context): Promise<GetServerSidePropsResult<ServerProps>> => {
+  const { params } = context
+
+  const filterData = params?.slug
+
+  if (!filterData || !filterData[0] || !filterData[1]) {
+    return {
+      notFound: true,
+    }
   }
 
   const filteredYear = +filterData[0]
@@ -25,22 +37,43 @@ export default function FilteredEventsPage() {
     filteredMonth < 1 ||
     filteredMonth > 12
   ) {
-    return (
-      <>
-        <ErrorAlert>Invalid filter...</ErrorAlert>
-        <div className="center">
-          <Button link="/events">Show All Events</Button>
-        </div>
-      </>
-    )
+    return {
+      props: {
+        hasError: true,
+      },
+      // notFound: true,
+      // redirect: {
+      //   destination: '/error',
+      // },
+    }
   }
 
-  const filteredEvents = getFilteredEvents({
+  const filteredEvents = await getFilteredEvents({
     year: filteredYear,
     month: filteredMonth,
   })
 
-  if (!filteredEvents || filteredEvents.length === 0) {
+  if (!filteredEvents.length) {
+    return {
+      props: {
+        hasError: true,
+      },
+    }
+  }
+
+  return {
+    props: {
+      events: filteredEvents,
+      date: {
+        year: filteredYear,
+        month: filteredMonth,
+      },
+    },
+  }
+}) satisfies GetServerSideProps
+
+export default function FilteredEventsPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  if (props.hasError || !props.events || !props.date) {
     return (
       <>
         <ErrorAlert>No events found for the chosen filter!</ErrorAlert>
@@ -51,12 +84,12 @@ export default function FilteredEventsPage() {
     )
   }
 
-  const date = new Date(filteredYear, filteredMonth - 1)
+  const date = new Date(props.date.year, props.date.month - 1)
 
   return (
     <>
       <ResultsTitle date={date} />
-      <EventList items={filteredEvents} />
+      <EventList items={props.events} />
     </>
   )
 }
