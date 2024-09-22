@@ -15,8 +15,8 @@ export const getStaticProps = (async (context): Promise<GetStaticPropsResult<Sta
       events: featuredEvents,
     },
     // Next.js will invalidate the cache when a
-    // request comes in, at most once every 10 seconds.
-    revalidate: 10,
+    // request comes in, at most once every 30 minutes.
+    revalidate: 1800,
   }
 }) satisfies GetStaticProps
 
